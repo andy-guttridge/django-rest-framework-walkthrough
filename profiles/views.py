@@ -38,6 +38,7 @@ class ProfileDetail(APIView):
     # get_object method is a self defined method, not a standard
     # Django one. We use this to look for the profile and either
     # retrieve it or return a 404 error
+
     def get_object(self, pk):
         try:
             profile = Profile.objects.get(pk=pk)
@@ -47,14 +48,14 @@ class ProfileDetail(APIView):
             return profile
         except Profile.DoesNotExist:
             raise Http404
-    
+
     def get(self, request, pk):
         profile = self.get_object(pk)
         # This time we are only dealing with a single profile instance, 
         # not a queryset, so no need for many=True.
         serializer = ProfileSerializer(profile, context={'request': request})
         return Response(serializer.data)
-    
+
     def put(self, request, pk):
         # Call get_object to attempt to retrieve the profile
         profile = self.get_object(pk)
