@@ -3,7 +3,8 @@ from .models import Profile
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    # Make the owner field read only
+    # Make the owner field read only, and overwrite the default
+    # value (which would be the user id) with the username.
     owner = serializers.ReadOnlyField(source='owner.username')
 
     class Meta:
