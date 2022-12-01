@@ -21,5 +21,6 @@ urlpatterns = [
     # Django REST Framework include log-in and log-out
     # views we can use. We just need to include them here.
     path('api-auth', include('rest_framework.urls')),
-    path('', include('profiles.urls'))
+    path('', include('profiles.urls')),
+    path('', include('posts.urls')),
 ]
