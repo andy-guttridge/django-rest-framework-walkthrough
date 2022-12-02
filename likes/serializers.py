@@ -18,7 +18,11 @@ class LikeSerializer(serializers.ModelSerializer):
 
     # Create is a Django method of the super-class.
     # Here, we used it to catch if we are trying to create
-    # a duplicate of an object that already exists.
+    # a duplicate of an object that already exists and throw
+    # an error if we are. Note that the model itself was defined
+    # such that the owner and post to which the like is associated
+    # have to be unique, so that then gives us an error if there is
+    # an attempt to create a duplicate, which we can catch here.
     def create(self, validated_data):
         try:
             return super().create(validated_data)
