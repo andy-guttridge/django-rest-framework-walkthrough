@@ -18,3 +18,7 @@ class CommentSerializer(serializers.ModeSerializer):
             'id', 'owner', 'post', 'created_at', 'updated_at',
             'content', 'is_owner', 'profile_id', 'profile_image'
         ]
+
+
+class CommentDetailSerializer(CommentSerializer):
+    post = serializers.ReadOnlyField(source='post.id')
