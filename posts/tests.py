@@ -22,7 +22,7 @@ class PostListViewTests(APITestCase):
         # Test if the expected HTTP status code is returned
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         print(response.data)
-    
+
     def test_logged_in_user_can_create_post(self):
         # Log our dummy user in.
         self.client.login(username='andy', password='12345')
