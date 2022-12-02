@@ -9,6 +9,8 @@ class PostSerializer(serializers.ModelSerializer):
     profile_image = serializers.ReadOnlyField(source='owner.profile.image.url')
     is_owner = serializers.SerializerMethodField()
     like_id = serializers.SerializerMethodField()
+    comments_count = serializers.ReadOnlyField()
+    likes_count = serializers.ReadOnlyField()
 
     # The validator method's name is always validate_fieldname.
     # We use this to validate the image, to make sure the file size,
@@ -52,5 +54,5 @@ class PostSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'owner', 'created_at', 'updated_at', 'title', 'content',
             'image', 'profile_id', 'profile_image', 'is_owner', 'image_filter',
-            'like_id'
+            'like_id', 'comments_count', 'likes_count'
         ]
