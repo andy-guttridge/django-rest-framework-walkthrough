@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Profile
+from followers.models import Follower
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -12,6 +13,12 @@ class ProfileSerializer(serializers.ModelSerializer):
     # The SerializeMethodField method gets its value by calling a method
     # on our serializer class called get_fieldname.
     is_owner = serializers.SerializerMethodField()
+    following_id = serializers.SerializerMethodField()
+    # Here we add additional fields we've created in our views.py file to the
+    # serializer
+    posts_count = serializers.ReadOnlyField()
+    followers_count = serializers.ReadOnlyField()
+    following_count = serializers.ReadOnlyField()
 
     # Method to provide a value for our is_owner field.
     # Note we can access the request as it is passed in from the methods
@@ -21,6 +28,18 @@ class ProfileSerializer(serializers.ModelSerializer):
         # Check if the current user is the owner of the profile, and
         # return the result.
         return request.user == obj.owner
+    
+    # Populate the following_id field. If the user is authenticated,
+    # check if this profile is one the user is following.
+    def get_following_id(self, obj):
+        user = self.context['request'].user
+        if user.is_authenticated:
+            following = Follower.objects.filter(
+                owner=user, followed=obj.owner
+            ).first()
+            return following.id if following else None
+        # Return None if ther user isn't authenticated
+        return None
 
     class Meta:
         model = Profile
@@ -30,5 +49,6 @@ class ProfileSerializer(serializers.ModelSerializer):
         # serialized data.
         fields = [
             'id', 'owner', 'created_at', 'updated_at', 'name',
-            'content', 'image', 'is_owner'
+            'content', 'image', 'is_owner', 'following_id',
+            'posts_count', 'followers_count', 'following_count'
         ]
