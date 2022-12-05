@@ -30,9 +30,7 @@ class CommentList(generics.ListCreateAPIView):
     ]
 
     # Fields for DjangoFilterBackend
-    filterset_fields = [
-        'post'
-    ]
+    filterset_fields = ['post']
 
     # We use the Django define perform_create method to ensure comments
     # are associated with a user upon creation.
