@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django_filters.rest_framework import DjangoFilterBackend
 from posts.models import Post
 
 
