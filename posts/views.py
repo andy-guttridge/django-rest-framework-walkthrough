@@ -28,11 +28,12 @@ class PostList(generics.ListCreateAPIView):
         filters.OrderingFilter,
         # Add a search filter
         filters.SearchFilter,
+        # Add DjangoFilterBackend
         DjangoFilterBackend,
     ]
     # Fileds for DjangoFilterBackend
     filterset_fields = [
-        'owner__followed_owner__profile',
+        'owner__followed__owner__profile',
         'likes__owner__profile',
         'owner__profile'
     ]

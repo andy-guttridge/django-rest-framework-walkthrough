@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics, permissions, filters
+from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Count
 from django.http import Http404
 from .models import Profile
@@ -34,7 +35,12 @@ class ProfileList(generics.ListAPIView):
     # to sort on. Note we have included two fields from the Follwers models, where
     # we use the underscores to perform a lookup.
     filter_backends = [
-        filters.OrderingFilter
+        filters.OrderingFilter,
+        DjangoFilterBackend,
+    ]
+    # Filter paths for DjangoFilterBackend
+    filterset_fields = [
+        'owner__following__followed__profile'
     ]
     ordering_fields = [
         'posts_count',
