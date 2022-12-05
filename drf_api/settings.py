@@ -26,6 +26,31 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Check if we are running in dev or production environment, and
+# use either session or JWT authentication as appropriate
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [(
+        'rest_framework.authentication.SessionAuthentication'
+        if 'DEV' in os.environ
+        else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+    )]
+}
+
+# Enable JWT authentication
+REST_USE_JWT = True
+# Ensure JWT authentication occurs over HTTPS
+JWT_AUTH_SECURE = True
+# Name access token
+JWT_AUTH_COOKIE = 'my-app-auth'
+# Name refresh token
+JWT_AUTH_REFRESH_COOKIE = 'my-refresh token'
+
+# Overwrite the default REST_AUTH_SERIALIZERS value to use our
+# own custom serializer, which adds a profile id and image to the
+# details of the authenticated user returned to the client.
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'drf_api.serializers.CurrentUserSerializer'
+}
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -52,12 +77,20 @@ INSTALLED_APPS = [
     'cloudinary',
     'rest_framework',
     'django_filters',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
     'profiles',
     'posts',
     'comments',
     'likes',
     'followers',
 ]
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
