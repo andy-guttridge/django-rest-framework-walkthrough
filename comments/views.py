@@ -1,5 +1,6 @@
 from rest_framework import generics, permissions
 from drf_api.permissions import IsOwnerOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Comment
 from .serializers import CommentSerializer, CommentDetailSerializer
 
@@ -23,7 +24,16 @@ class CommentList(generics.ListCreateAPIView):
     # access their own data, e.g. sensitive data like payments, account
     # details etc.
     queryset = Comment.objects.all()
-    
+    filter_backends = [
+        # Add DjangoFilterBackend
+        DjangoFilterBackend,
+    ]
+
+    # Fields for DjangoFilterBackend
+    filterset_fields = [
+        'post'
+    ]
+
     # We use the Django define perform_create method to ensure comments
     # are associated with a user upon creation.
     def perform_create(self, serializer):
