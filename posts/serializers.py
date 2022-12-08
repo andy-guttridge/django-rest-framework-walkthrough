@@ -16,7 +16,7 @@ class PostSerializer(serializers.ModelSerializer):
     # We use this to validate the image, to make sure the file size,
     # height and width are within appropriate limits. If not, we raise
     # validation errors with an appropriate message.
-    def validate_image():
+    def validate_image(self, value):
         if value.size > 1024 * 1024 * 2:
             raise serializers.ValidationError(
                 'Image size larger than 2MB'
